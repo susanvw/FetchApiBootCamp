@@ -29,11 +29,8 @@
 			})
 		).json();
 
-		// create new li item
-
 		document.querySelector("#page").innerHTML += `${responseJson.Message} <br>`;
 
-		// are we done
 		if (responseJson["Are we done?"] == "NO") {
 			await fetchUntil(responseJson.Message);
 		}
