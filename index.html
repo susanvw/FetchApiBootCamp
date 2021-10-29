@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<style type="text/css">
+			h1 {
+				color: purple;
+			}
+			body {
+				font-family: "Courier New", Courier, monospace;
+				font-size: 12px;
+				padding: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Response Messages</h1>
+		<div id="page"></div>
+	</body>
+</html>
+<script>
+	async function fetchUntil(message = null) {
+		const responseJson = await (
+			await fetch(`https://sandbox.deploydx.com/devgym-server.php`, {
+				method: "POST",
+				body: JSON.stringify({
+					last_received: message,
+					secret: 0,
+				}),
+			})
+		).json();
+
+		// create new li item
+
+		document.querySelector("#page").innerHTML += `${responseJson.Message} <br>`;
+
+		// are we done
+		if (responseJson["Are we done?"] == "NO") {
+			await fetchUntil(responseJson.Message);
+		}
+	}
+
+	fetchUntil();
+</script>
